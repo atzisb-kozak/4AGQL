@@ -1,0 +1,119 @@
+input CreateUserInput {
+  username: String!
+  password: String!
+  email: String!
+  role: String!
+  token: String
+}
+
+input CreateGradeInput {
+  grade: Float!
+  name: String!
+  token: String
+}
+
+input CreateClassInput {
+  name: String!
+  token: String
+}
+
+
+scalar DateTime
+
+type User {
+  created_at: DateTime!
+  user_id: ID!
+  username: String!
+  password: String
+  email: String!
+  role: String!
+  classe: Class
+  grades: [Grade]
+  updated_at: DateTime!
+}
+
+type Grade {
+  created_at: DateTime!
+  grade_id: ID!
+  user: User
+  grade: Float!
+  name: String!
+  updated_at: DateTime!
+}
+
+type Class {
+  created_at: DateTime!
+  user_id: ID!
+  name: String!
+  users: [User]!
+  updated_at: DateTime!
+}
+
+type Mutation {
+  createUser(user: CreateUserInput!): UserPayload!
+  deleteUser(userId: ID!, token: String!): UserPayload!
+  updateUser(user: UpdateUserInput!, userId: ID!, token: String!): UserPayload!
+  createGrade(grade: CreateGradeInput!, token: String!): GradePayload!
+  deleteGrade(gradeId: ID!, token: String!): GradePayload!
+  updateGrade(grade: UpdateGradeInput!, gradeId: ID!, token: String!): GradePayload!
+  createClass(class: CreateClassInput!, token: String): ClassPayload!
+  deleteClass(classID: ID!, token: String!): ClassPayload!
+  updateClass(class: UpdateClassInput!, classId: ID!, token: String): ClassPayload!
+  login(login: LoginInput): UserPayload!
+  register(user: CreateUserInput!): UserPayload!
+}
+
+type Query {
+  User: [User!]!
+  UserID(userId: ID!): User!
+  Grade: [Grade!]!
+  GradeID(userId: ID!): Grade!
+  Class: [Class!]!
+  ClassID(userId: ID!): Class!
+}
+
+input UpdateUserInput {
+  username: String
+  password: String
+  email: String
+  role: String
+  token: String
+}
+
+input UpdateGradeInput {
+  grade: Float
+  name: String
+  token: String
+}
+
+input UpdateClassInput {
+  name: String!
+  token: String
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+  token: String
+}
+
+type UserPayload {
+  success: Boolean!
+  token: String
+  data: User
+  error: String
+}
+
+type GradePayload {
+  success: Boolean!
+  token: String
+  data: Grade
+  error: String
+}
+
+type ClassPayload {
+  success: Boolean!
+  token: String
+  data: Class
+  error: String
+}
